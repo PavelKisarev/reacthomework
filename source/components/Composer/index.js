@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 
-import avatar from 'theme/assets/lisa';
-
 import Styles from './styles.m.css';
+
+import { Consumer } from 'components/HOC/withProfile';
 
 export default class Composer extends Component {
     render() {
         return (
-            <>
-                <section className={Styles.composer}>
-                    <img src = {this.props.avatar} />
+            <Consumer>
+                {(context) => (
+                    <section className={Styles.composer}>
+                    <img src = {context.avatar} />
                     <form>
-                        <textarea placeholder= {`Hello ${this.props.currentUserFirstName}`} />
+                        <textarea placeholder= {`Hello ${context.currentUserFirstName}`} />
                         <input type='submit' value='Post' />
                     </form>
                 </section>
-            </>
+                )}
+            </Consumer>
         );
     }
 }
