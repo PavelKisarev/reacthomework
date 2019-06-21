@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {func,string,number,array} from 'prop-types'
 
-import { Consumer } from 'components/HOC/withProfile';
+import { withProfile } from 'components/HOC/withProfile';
 import Like from 'components/Like'
 
 import Styles from './styles.m.css';
 
-export default class Post extends Component {
+class Post extends Component {
     static PropTypes = {
         _likePost: func.isRequired,
         _deletePost: func.isRequired,
@@ -17,12 +17,8 @@ export default class Post extends Component {
         likes: array.isRequired,
     }
 
-    constructor(){
-        super();
-        this._deletePost=this._deletePost.bind(this);
-    }
 
-    _deletePost(){
+    _deletePost = () => {
         const { _deletePost,id } = this.props;
         _deletePost(id);
     }
@@ -30,21 +26,21 @@ export default class Post extends Component {
 
     render() {
 
-        const { comment, created , _likePost, id, likes} = this.props;
+        const {avatar, currentUserFirstName, comment, created , _likePost, id, likes} = this.props;
 
         return (
-            <Consumer>
-                {(context)=>(
+
                     <section className={Styles.post}>
                         <span className={Styles.cross} onClick={this._deletePost}/>
-                        <img src = {context.avatar} />
-                        <a>{context.currentUserFirstName}</a>
+                        <img src = {avatar} />
+                        <a>{currentUserFirstName}</a>
                         <time>{moment.unix(created).format('MM DD YY')}</time>
                         <p>{comment}</p>
-                        <Like id = {id} likes = {likes} _likePost={_likePost} {...context} />
+                        <Like id = {id} likes = {likes} _likePost={_likePost} />
                     </section>
-                )}
-            </Consumer>
+
         );
     }
 }
+
+export default withProfile(Post);
